@@ -1,0 +1,347 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ *
+ * @Author Keith Milton
+ */
+
+package keith_milton_a2;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import static java.awt.event.ActionEvent.ALT_MASK;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.Font;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
+/**
+ *
+ * @author Keith
+ */
+class Keith_Milton_A2 extends JFrame implements ActionListener, FocusListener
+{
+
+    //declaring jlabels, jtextfields, jtextarea, jbutton, jmenu, jmenubar, jmenuitem and gridbagconstraints
+    private final JLabel m_miles;
+    private final JTextField m_milesEntered;
+    private final JLabel m_kilometres;
+    private final JTextField m_kilometresEntered;
+    private final JButton m_calculate;
+    private final JLabel m_display;
+    private final JMenu m_tools;
+    private final JMenuBar m_menubar;
+    private final JMenuItem m_clearAll;
+    private final JMenuItem m_clearResult;
+    private final JMenuItem m_exit;
+    private GridBagConstraints c;
+    private double m_milesIn;
+    private double m_kmsIn;
+    private double m_negativeNum;
+
+    public Keith_Milton_A2()
+    {
+        //sets title of the frame
+        this.setTitle("Distance Converter");
+        //sets the size of the frame
+        this.setSize(400, 250);
+        // set to kill process on close
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //creates a new jpanel called panel
+        JPanel panel = new JPanel();
+        //sets a new gridbaglayout to the panel
+        panel.setLayout(new GridBagLayout());
+        //adds the panel to the frame
+        this.add(panel);
+
+        //instantiates m_menubar
+        m_menubar = new JMenuBar();
+        //sets the jmenubar to the frame
+        this.setJMenuBar(m_menubar);
+
+        //instantiates m_tools
+        m_tools = new JMenu("Tools");
+        //sets mnemonic T to the jmenu
+        m_tools.setMnemonic(KeyEvent.VK_T);
+        //adds the jmenu to the menubar
+        m_menubar.add(m_tools);
+
+        //instantiates m_clearAll
+        m_clearAll = new JMenuItem("Clear All");
+        //sets mnemonic C to the jmenuitem
+        m_clearAll.setMnemonic(KeyEvent.VK_C);
+        //sets the accelerator to the jmenuitem
+        m_clearAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.SHIFT_MASK + ALT_MASK));
+        //adds the actionlistener to the jmenuitem
+        m_clearAll.addActionListener(this);
+        //adds the jmenuitem to the jmenu
+        m_tools.add(m_clearAll);
+
+        //instantiates m_clearResult
+        m_clearResult = new JMenuItem("Clear Result");
+        //sets mnemonic R to the jmenuitem
+        m_clearResult.setMnemonic(KeyEvent.VK_R);
+        //sets the accelerator to the jmenuitem
+        m_clearResult.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.SHIFT_MASK + ALT_MASK));
+        //adds the actionlistener to the jmenuitem
+        m_clearResult.addActionListener(this);
+        //adds the jmenuitem to the jmenu
+        m_tools.add(m_clearResult);
+
+        //instantiates m_exit
+        m_exit = new JMenuItem("Exit");
+        //sets mnemonic E to the jmenuitem
+        m_exit.setMnemonic(KeyEvent.VK_E);
+        //sets the accelerator to the jmenuitem
+        m_exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.SHIFT_MASK + ALT_MASK));
+        //adds the actionlistener to the jmenuitem
+        m_exit.addActionListener(this);
+        //adds the jmenuitem to the jmenu
+        m_tools.add(m_exit);
+
+        //instantiates m_miles
+        m_miles = new JLabel("Miles:");
+        //instantiates c
+        c = new GridBagConstraints();
+        //sets the gridbagconstraints for position x and y of the jlabel
+        c.gridx = 1;
+        c.gridy = 1;
+        //sets the gridbadconstraints for weightx as 0.8
+        c.weightx = 0.8;
+        //sets the gridbagconstraints for anchor position of the jlabel
+        c.anchor = GridBagConstraints.LINE_END;
+        //sets the gridbagconstraints for the insets of the jlabel
+        c.insets = new Insets(0, 20, 0, 10);
+        //adds the jlabel and its gridbagconstraints to the panel
+        panel.add(m_miles, c);
+
+        //instantiates m_milesEntered 
+        m_milesEntered = new JTextField();
+        //sets the minimum size of the jtextfield
+        m_milesEntered.setMinimumSize(new Dimension(90, 20));
+        //sets the preferred size of the jtextfield
+        m_milesEntered.setPreferredSize(new Dimension(90, 20));
+        //instantiates c
+        c = new GridBagConstraints();
+        //sets the gridbagconstraints for position x and y of the jtextfield
+        c.gridx = 2;
+        c.gridy = 1;
+        //adds the focuslistener to the jtextfield
+        m_milesEntered.addFocusListener((FocusListener) this);
+        //sets the gridbadconstraints for weightx as 0.8
+        c.weightx = 0.8;
+        //sets the gridbadconstraints for ipadx
+        c.ipadx = 10;
+        //sets the gridbagconstraints for anchor position of the jtextfield
+        c.anchor = GridBagConstraints.LINE_START;
+        //sets the gridbadconstraints for fill to horizontal
+        c.fill = GridBagConstraints.HORIZONTAL;
+        //sets the gridbagconstraints for the insets of the jtextfield
+        c.insets = new Insets(5, 0, 5, 60);
+        //adds the jtextfield and its gridbagconstraints to the panel
+        panel.add(m_milesEntered, c);
+
+        //instantiates m_kilometres
+        m_kilometres = new JLabel("Kilometres:");
+        //instantiates c
+        c = new GridBagConstraints();
+        //sets the gridbagconstraints for anchor position of the jlabel
+        c.anchor = GridBagConstraints.LINE_END;
+        //sets the gridbagconstraints for position x and y of the jlabel
+        c.gridx = 1;
+        c.gridy = 2;
+        //sets the gridbadconstraints for weightx as 0.8
+        c.weightx = 0.8;
+        //sets the gridbagconstraints for the insets of the jlabel
+        c.insets = new Insets(0, 20, 0, 10);
+        //adds the jlabel and its gridbagconstraints to the panel
+        panel.add(m_kilometres, c);
+
+        //instantiates m_kilometresEntered
+        m_kilometresEntered = new JTextField();
+        //sets the minimum size of the jtextfield
+        m_kilometresEntered.setMinimumSize(new Dimension(90, 20));
+        //sets the preferred size of the jtextfield
+        m_kilometresEntered.setPreferredSize(new Dimension(90, 20));
+        //instantiates c
+        c = new GridBagConstraints();
+        //sets the gridbagconstraints for position x and y of the jtextfield
+        c.gridx = 2;
+        c.gridy = 2;
+        //sets the gridbadconstraints for weightx as 0.8
+        c.weightx = 0.8;
+        //sets the gridbadconstraints for ipadx
+        c.ipadx = 10;
+        //sets the gridbagconstraints for anchor position of the jtextfield
+        c.anchor = GridBagConstraints.LINE_START;
+        //sets the gridbadconstraints for fill to horizontal
+        c.fill = GridBagConstraints.HORIZONTAL;
+        //adds the focuslistener to the jtextfield 
+        m_kilometresEntered.addFocusListener((FocusListener) this);
+        //sets the gridbagconstraints for the insets of the jtextfield 
+        c.insets = new Insets(5, 0, 5, 60);
+        //adds the jtextfield and its gridbagconstraints to the panel
+        panel.add(m_kilometresEntered, c);
+
+        //instantiates m_calculate
+        m_calculate = new JButton("Convert!");
+        //instantiates c
+        c = new GridBagConstraints();
+        //sets the tooltiptext for the jbutton
+        m_calculate.setToolTipText("Click here to convert! (Note this application defaults to converting miles to km if values are entered for both)");
+        //adds an actionlistener to the jbutton
+        m_calculate.addActionListener(this);
+        //sets the gridbagconstraints for position x and y of the jbutton
+        c.gridx = 2;
+        c.gridy = 3;
+        //sets the gridbadconstraints for weightx as 0
+        c.weightx = 0;
+        //sets the gridbagconstraints for anchor position of the jbutton
+        c.anchor = GridBagConstraints.LINE_START;
+        //sets the gridbagconstraints for the insets of the jbutton
+        c.insets = new Insets(5, 0, 5, 0);
+        //adds the jbutton and its gridbagconstraints to the panel
+        panel.add(m_calculate, c);
+
+        //instantiates m_display
+        m_display = new JLabel();
+        //instantiates c
+        c = new GridBagConstraints();
+        //sets the gridbagconstraints for position x and y of the jlabel
+        c.gridx = 2;
+        c.gridy = 4;
+        //sets the gridbadconstraints for fill to horizontal
+        c.fill = GridBagConstraints.HORIZONTAL;
+        //sets the gridbadconstraints for weightx as 0.8
+        c.weightx = 0.8;
+        //sets the gridbagconstraints for anchor position of the jlabel
+        c.anchor = GridBagConstraints.LINE_START;
+        //sets the insets for the jlabel
+        c.insets = new Insets(5, 0, 5, 0);
+        //sets the font for the jlabel
+        m_display.setFont(new Font(null, Font.BOLD, 12));
+        //adds the jlabel and its gridbagconstraints to the panel
+        panel.add(m_display, c);
+
+        //sets the frame as visible
+        setVisible(true);
+    }
+
+    public static void main(String[] args)
+    {
+        //creates a new Keith_Milton_A2 each time main method is run on startup
+        new Keith_Milton_A2();// TODO code application logic here
+    }
+
+    @Override
+    public void focusGained(FocusEvent fe)
+    {
+        fe.getComponent().setBackground(Color.LIGHT_GRAY);
+    }
+
+    @Override
+    public void focusLost(FocusEvent fe)
+    {
+        fe.getComponent().setBackground(Color.WHITE);
+    }
+
+    public class NegativeNumberException extends Exception
+    {
+
+        public NegativeNumberException()
+        {
+
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        try
+        {
+            //checks if "Clear All" is the action command and sets all fields to null if true
+            if ("Clear All".equals(e.getActionCommand()))
+            {
+                m_milesEntered.setText(null);
+                m_kilometresEntered.setText(null);
+                m_display.setText(null);
+            } //checks if "Clear Result" is the action command and sets m_dispaly to null if true
+            else if ("Clear Result".equals(e.getActionCommand()))
+            {
+                m_display.setText(null);
+            } //checks if "Exit" is the action command and exits the programme if true
+            else if ("Exit".equals(e.getActionCommand()))
+            {
+                System.exit(0);
+            } //checks if source is m_calculate
+            else if (e.getSource() == m_calculate)
+            {
+                //checks if m_milesentered is empty
+                if ("".equals(m_milesEntered.getText()))
+                {
+                    //takes the text entered in as a long from the milesEntered jtextfield
+                    m_kmsIn = Double.parseDouble(m_kilometresEntered.getText());
+                    if (m_kmsIn < 0)
+                    {
+                        m_negativeNum = m_kmsIn;
+                        throw new NegativeNumberException();
+                    }
+                    //multiplies the long and stores it as a double 
+                    double milesOut = m_kmsIn * 0.621371;
+                    //creats a string to the value of the double kmsOut
+                    String milesAnswer = String.valueOf(milesOut);
+                    //sets the foreground color to black
+                    m_display.setForeground(Color.BLACK);
+                    //sets the answer of the kilometersOut jtextfield
+                    m_display.setText(m_kmsIn + " km is " + milesAnswer + "miles.");
+                } else if (!"".equals(m_milesEntered.getText()))
+                {
+                    //sets m_kilometersentered text to null
+                    m_kilometresEntered.setText(null);
+                    //takes the text entered in as a long from the milesEntered jtextfield
+                    m_milesIn = Double.parseDouble(m_milesEntered.getText());
+                    if (m_milesIn < 0)
+                    {
+                        m_negativeNum = m_milesIn;
+                        throw new NegativeNumberException();
+                    }
+                    //multiplies the long and stores it as a double 
+                    double kmsOut = m_milesIn * 1.60934;
+                    //creats a string to the value of the double kmsOut
+                    String kilometresAnswer = String.valueOf(kmsOut);
+                    //sets the foreground color to black
+                    m_display.setForeground(Color.BLACK);
+                    //sets the answer of the kilometersOut jtextfield
+                    m_display.setText(m_milesIn + " miles is " + kilometresAnswer + " km.");
+                }
+            }
+        } catch (NumberFormatException f)
+        {
+            //sets foreground color to red
+            m_display.setForeground(Color.RED);
+            //sets the text of the jlabel when exception is caught
+            m_display.setText("<html>" + "An error occured " + f.getMessage().toLowerCase() + ". Enter positive numeric values only. Press Menu item " + "\"Clear All\"" + " and try again." + "</html>");
+        } catch (NegativeNumberException g)
+        {
+            //sets foreground color to red
+            m_display.setForeground(Color.RED);
+            //sets the text of the jlabel when exception is caught
+            m_display.setText("<html>" + "An error occured for input " + m_negativeNum + ". Enter positive numeric values only. Press Menu item " + "\"Clear All\"" + " and try again." + "</html>");
+        }
+    }
+}
